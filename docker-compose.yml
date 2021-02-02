@@ -1,0 +1,10 @@
+version: '3.1'
+services:
+  app:
+    image: ramzec2010/roman-public-repository:v1
+    ports:
+    - 8080:8080
+    volumes:
+    - /log:/log
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
