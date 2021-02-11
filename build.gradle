@@ -1,4 +1,7 @@
 plugins {
+	id 'com.palantir.docker' version '0.25.0'
+	id 'com.palantir.docker-run' version '0.25.0'
+	id 'com.palantir.docker-compose' version '0.25.0'
 	id 'org.springframework.boot' version '2.4.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
@@ -43,6 +46,28 @@ dependencies {
 	// https://mvnrepository.com/artifact/junit/junit
 	testCompile group: 'junit', name: 'junit', version: '4.4'
 
+}
+
+docker {
+	name "aws-integration"
+	files "build/libs/${bootJar.archiveFileName.get()}"
+	buildArgs([JAR_FILE: bootJar.archiveFileName.get()])
+	noCache true
+}
+
+dockerRun {
+	name project.name
+	image "aws-integration"
+	ports '8080:8080'
+	clean true
+}
+
+dockerCompose {
+	dockerComposeFile 'docker-compose-local.yml'
+}
+
+dockerComposeUp {
+	dependsOn project.tasks.findByName('docker')
 }
 
 test {
