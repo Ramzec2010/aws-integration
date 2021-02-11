@@ -1,3 +1,5 @@
+#!/bin/bash
+yum update -y
 amazon-linux-extras install java-openjdk11
 yum install git
 amazon-linux-extras install docker
