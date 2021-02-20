@@ -72,6 +72,18 @@ jobs: # a collection of steps
           command: |
             ./gradlew docker dockerPush
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+      - add_ssh_keys:
+          fingerprints:
+            - "c3:fd:aa:b1:10:17:25:63:0b:8a:ce:a5:cd:f6:8c:f6"
+      - run:
+          name: Run new docker images in ec2
+          command: |
+            ssh user@host <<'ENDSSH'
+              docker kill $(docker ps -q)
+              docker rm $(docker ps -a -q)
+              docker rmi $(docker images -q)
+              docker run -p 80:8080 ramzec2010/roman-public-repository:v1
+            ENDSSH
 workflows:
   version: 2
   workflow:
