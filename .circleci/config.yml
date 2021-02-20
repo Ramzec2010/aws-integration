@@ -78,7 +78,7 @@ jobs: # a collection of steps
       - run:
           name: Run new docker images in ec2
           command: |
-            ssh user@host \<<'ENDSSH'
+            ssh ec2-user@ec2-54-197-132-206.compute-1.amazonaws.com \<<'ENDSSH'
               docker kill $(docker ps -q)
               docker rm $(docker ps -a -q)
               docker rmi $(docker images -q)
