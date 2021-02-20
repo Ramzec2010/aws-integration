@@ -16,6 +16,9 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
+springBoot {
+	buildInfo()
+}
 
 repositories {
 	mavenCentral()

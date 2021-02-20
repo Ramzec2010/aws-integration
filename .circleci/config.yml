@@ -28,11 +28,11 @@ jobs: # a collection of steps
           key: v1-gradle-cache-{{ checksum "build.gradle" }}
 
       - run:
-          name: Assemble JAR
+          name: Build JAR
           command: |
             # Skip this for other nodes
             if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
-              ./gradlew assemble
+              ./gradlew clean build
             fi
       # As the JAR was only assembled in the first build container, build/libs will be empty in all the other build containers.
       - store_artifacts:
@@ -54,7 +54,7 @@ jobs: # a collection of steps
               docker kill $(docker ps -q)
               docker rm $(docker ps -a -q)
               docker rmi $(docker images -q)
-              docker run -p 80:8080 ramzec2010/roman-public-repository:v1
+              docker run -d -p 80:8080 ramzec2010/roman-public-repository:v1
             ENDSSH
 workflows:
   version: 2
