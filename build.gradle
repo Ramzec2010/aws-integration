@@ -37,7 +37,7 @@ dependencies {
 }
 
 docker {
-	name "aws-integration"
+	name "ramzec2010/roman-public-repository"
 	files "build/libs/${bootJar.archiveFileName.get()}"
 	buildArgs([JAR_FILE: bootJar.archiveFileName.get()])
 	noCache true
@@ -45,7 +45,7 @@ docker {
 
 dockerRun {
 	name project.name
-	image "aws-integration"
+	image "ramzec2010/roman-public-repository"
 	ports '8080:8080'
 	clean true
 }
@@ -57,6 +57,7 @@ dockerCompose {
 dockerComposeUp {
 	dependsOn project.tasks.findByName('docker')
 }
+
 
 test {
 	useJUnitPlatform()

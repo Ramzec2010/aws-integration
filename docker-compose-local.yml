@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   app:
-    image: aws-integration
+    image: ramzec2010/roman-public-repository
     ports:
     - 80:8080
     volumes:
