@@ -21,7 +21,7 @@ public class ServiceHealthIndicator implements HealthIndicator {
         return Health.up()
                 .withDetail(message_key, "Available")
                 .withDetail("name", buildProperties.getName())
-                .withDetail("version", buildProperties.getVersion())
+                .withDetail("version 2", buildProperties.getVersion())
                 .withDetail("deployment date", buildProperties.getTime().toString())
                 .build();
     }
