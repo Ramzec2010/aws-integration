@@ -13,11 +13,12 @@ jobs: # a collection of steps
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     machine: # run the steps with Docker
-      image: circleci/openjdk:11.0.3-jdk-stretch # ...with this image as the primary container; this is where all `steps` will run
-       # auth:
-        #  username: mydockerhub-user
-         # password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      image: ubuntu-2004:202101-01
     steps: # a collection of executable commands
+      - run:
+        name: Install java
+        command: |
+          apt install default-jre
       - checkout # check out source code to working directory
       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
       - restore_cache:
