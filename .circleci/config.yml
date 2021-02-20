@@ -28,7 +28,7 @@ jobs: # a collection of steps
           key: v1-gradle-cache-{{ checksum "build.gradle" }}
 
       - run:
-          name: Build JAR
+          name: Assemble JAR
           command: |
             # Skip this for other nodes
             if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
