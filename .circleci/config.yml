@@ -16,9 +16,9 @@ jobs: # a collection of steps
       image: ubuntu-2004:202101-01
     steps: # a collection of executable commands
       - run:
-        name: Install java
-        command: |
-          apt install default-jre
+          name: Install java
+          command: |
+            apt install default-jre
       - checkout # check out source code to working directory
       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
       - restore_cache:
