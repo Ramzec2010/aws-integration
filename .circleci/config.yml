@@ -5,53 +5,53 @@
 version: 2.1
 
 jobs: # a collection of steps
-  build:
-    environment:
-      # Configure the JVM and Gradle to avoid OOM errors
-      _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-    docker: # run the steps with Docker
-      - image: circleci/openjdk:11.0.3-jdk-stretch
-    steps: # a collection of executable commands
-      - checkout # check out source code to working directory
-      # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-      - restore_cache:
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-      - restore_cache:
-          key: v1-gradle-cache-{{ checksum "build.gradle" }}
-      - run:
-          name: Assemble JAR
-          command: |
-            # Skip this for other nodes
-            if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
-              ./gradlew clean test build
-            fi
-      # As the JAR was only assembled in the first build container, build/libs will be empty in all the other build containers.
-      - store_artifacts:
-          path: build/libs
-
-  deploy:
-    machine: # run the steps with Docker
-      image: ubuntu-2004:202101-01
+  - build:
+      environment:
+        # Configure the JVM and Gradle to avoid OOM errors
+        _JAVA_OPTIONS: "-Xmx3g"
+        GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+      docker: # run the steps with Docker
+        - image: circleci/openjdk:11.0.3-jdk-stretch
       steps: # a collection of executable commands
-        - run: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
+        - checkout # check out source code to working directory
+        # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+        - restore_cache:
+            key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+        - restore_cache:
+            key: v1-gradle-cache-{{ checksum "build.gradle" }}
         - run:
-            name: Build docker
+            name: Assemble JAR
             command: |
-              ./build-local.sh
-        - add_ssh_keys:
-            fingerprints:
-              - "c3:fd:aa:b1:10:17:25:63:0b:8a:ce:a5:cd:f6:8c:f6"
-        - run:
-            name: Run new docker images in ec2
-            command: |
-              ssh ec2-user@ec2-54-197-132-206.compute-1.amazonaws.com \<<'ENDSSH'
-                docker kill $(docker ps -q)
-                docker rm $(docker ps -a -q)
-                docker rmi $(docker images -q)
-                docker run -d -p 80:8080 ramzec2010/roman-public-repository
-              ENDSSH
+              # Skip this for other nodes
+              if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
+                ./gradlew clean test build
+              fi
+        # As the JAR was only assembled in the first build container, build/libs will be empty in all the other build containers.
+        - store_artifacts:
+            path: build/libs
+
+  - deploy:
+      machine: # run the steps with Docker
+        image: ubuntu-2004:202101-01
+        steps: # a collection of executable commands
+          - run: |
+              docker login -u $DOCKER_USER -p $DOCKER_PASS
+          - run:
+              name: Build docker
+              command: |
+                ./build-local.sh
+          - add_ssh_keys:
+              fingerprints:
+                - "c3:fd:aa:b1:10:17:25:63:0b:8a:ce:a5:cd:f6:8c:f6"
+          - run:
+              name: Run new docker images in ec2
+              command: |
+                ssh ec2-user@ec2-54-197-132-206.compute-1.amazonaws.com \<<'ENDSSH'
+                  docker kill $(docker ps -q)
+                  docker rm $(docker ps -a -q)
+                  docker rmi $(docker images -q)
+                  docker run -d -p 80:8080 ramzec2010/roman-public-repository
+                ENDSSH
 workflows:
   version: 2
   build_and_deploy:
