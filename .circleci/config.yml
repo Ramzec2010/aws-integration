@@ -34,6 +34,7 @@ jobs: # a collection of steps
     machine: # run the steps with Docker
       image: ubuntu-2004:202101-01
     steps: # a collection of executable commands
+      - checkout
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
@@ -57,4 +58,6 @@ workflows:
   build_and_deploy:
     jobs:
       - build
-      - deploy
+      - deploy:
+          requires:
+            - build
