@@ -1,7 +1,3 @@
-# Java Maven CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-java/ for more details
-#
 version: 2.1
 
 jobs: # a collection of steps
@@ -44,7 +40,7 @@ jobs: # a collection of steps
       - run:
           name: Build docker
           command: |
-            ./build-local.sh
+            ./build-and-push.sh
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
       - add_ssh_keys:
           fingerprints:
