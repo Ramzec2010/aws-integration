@@ -59,7 +59,6 @@ jobs: # a collection of steps
               docker run -d -p 80:8080 ramzec2010/roman-public-repository
             ENDSSH
 
-
 workflows:
   version: 2
   build_and_deploy:
