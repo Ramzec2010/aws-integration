@@ -1,0 +1,1 @@
+./gradlew clean test build docker dockerPush
