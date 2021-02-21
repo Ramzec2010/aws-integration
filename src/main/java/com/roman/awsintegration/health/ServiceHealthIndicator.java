@@ -24,6 +24,7 @@ public class ServiceHealthIndicator implements HealthIndicator {
                 .withDetail("version 2", buildProperties.getVersion())
                 .withDetail("deployment date", buildProperties.getTime().toString())
                 .build();
+
     }
 
     private Boolean isRunningServiceA() {
