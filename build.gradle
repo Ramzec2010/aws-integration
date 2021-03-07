@@ -26,16 +26,17 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.19'
+
+	implementation 'junit:junit:4.12'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly    'org.flywaydb:flyway-core'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.5.3'
 	annotationProcessor 'org.projectlombok:lombok'
-	implementation "com.commercetools.sdk.jvm.core:commercetools-models:1.59.0"
-	implementation "com.commercetools.sdk.jvm.core:commercetools-java-client-ahc-2_5:1.59.0"
-	implementation "com.commercetools.sdk.jvm.core:commercetools-java-client:1.59.0"
-	implementation "com.commercetools.sdk.jvm.core:commercetools-convenience:1.59.0"
-	implementation "com.commercetools:commercetools-sync-java:3.1.0"
 
 }
 
