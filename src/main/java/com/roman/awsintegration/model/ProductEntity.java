@@ -1,9 +1,9 @@
 package com.roman.awsintegration.model;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -21,14 +21,16 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "PRODUCT")
+@Table(name = "PRODUCT", schema = "public")
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
+@NoArgsConstructor
 public class ProductEntity extends BaseEntity {
 
     private static final long serialVersionUID = 3285573456314741883L;
@@ -61,7 +63,4 @@ public class ProductEntity extends BaseEntity {
             inverseJoinColumns = { @JoinColumn(name = "CATEGORY_ID") }
     )
     private Set<CategoryEntity> categories = new HashSet<>();
-
-
-
 }

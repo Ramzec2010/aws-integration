@@ -1,5 +1,7 @@
 package com.roman.awsintegration.model;
 
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
@@ -8,6 +10,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @MappedSuperclass
+@NoArgsConstructor
 public class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -6612614990450269845L;
