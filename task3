@@ -1,0 +1,27 @@
+In this task we add basic logic to the application, RDB and tests.
+
+1. There are products and categories. They have "many-2-many relation"
+2. Build REST API managment capabilities for this entities:
+2.1 CRUD
+2.2 Assign, un-assign products to categories.
+2.3 Get "all products", "all categories", "all products for given category" information
+2.4 Filters:
+ - For all products (+ for products in category):
+    a) price is in range
+    b) the name contains some char sequence
+2.5 Sorts:
+    a) Categories: by name, product count
+    b) Products: by name, price
+* You are free to add pagination or any additional sort/filter logic
+
+3. Application should have initial data
+4. You could use any cloud hosted (managed) RDBS.
+5. The available logic is covered with integration tests
+5.1. For testing purposes should be used data generation mechanizm (each run - new data)
+5.2. Tests cover API level
+5.3. Tests should run within build pipeline and have UI report
+
+Acceptaince criteria
+- API documentation tool contains all new entrypoins with ability to call them directly
+- All API covered with tests
+- None credentials should be presented into git repoo.
