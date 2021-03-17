@@ -38,6 +38,6 @@ public class CategoryApiImpl implements CategoryApi {
 
     @Override
     public ResponseEntity<List<CategoryResponse>> getAllCategories() {
-        return null;
+        return ResponseEntity.ok(categoryService.getAllCategory());
     }
 }

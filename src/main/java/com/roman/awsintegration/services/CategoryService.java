@@ -3,6 +3,8 @@ package com.roman.awsintegration.services;
 import com.roman.awsintegration.rest.request.CategoryRequest;
 import com.roman.awsintegration.rest.response.CategoryResponse;
 
+import java.util.List;
+
 public interface CategoryService {
     void deleteCategory(Long categoryId);
 
@@ -11,4 +13,6 @@ public interface CategoryService {
     CategoryResponse createCategory(CategoryRequest request);
 
     CategoryResponse updateCategory(Long categoryId, CategoryRequest request);
+
+    List<CategoryResponse> getAllCategory();
 }

@@ -12,6 +12,7 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -73,5 +74,11 @@ public class CategoryServiceImpl implements CategoryService {
         }
         entity = categoryRepository.save(entity);
         return mapCategoryModelToDto(entity);
+    }
+
+    @Override
+    public List<CategoryResponse> getAllCategory() {
+        List<CategoryEntity> all = categoryRepository.findAll();
+        return all.stream().map(this::mapCategoryModelToDto).collect(Collectors.toList());
     }
 }

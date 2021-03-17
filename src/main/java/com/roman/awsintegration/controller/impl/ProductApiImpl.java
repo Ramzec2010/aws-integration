@@ -5,6 +5,7 @@ import com.roman.awsintegration.rest.response.ProductResponse;
 import com.roman.awsintegration.rest.request.ProductRequest;
 import com.roman.awsintegration.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +39,7 @@ public class ProductApiImpl implements ProductApi {
     }
 
     @Override
-    public ResponseEntity<List<ProductResponse>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<List<ProductResponse>> getAllProducts(Pageable pageable) {
+        return ResponseEntity.ok(productService.getAllProducts(pageable));
     }
 }

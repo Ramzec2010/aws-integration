@@ -2,6 +2,7 @@ package com.roman.awsintegration.controller;
 
 import com.roman.awsintegration.rest.response.ProductResponse;
 import com.roman.awsintegration.rest.request.ProductRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,5 +36,5 @@ public interface ProductApi {
     @RequestMapping(value = "/api/v1/products",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<ProductResponse>> getAllProducts();
+    ResponseEntity<List<ProductResponse>> getAllProducts(Pageable pageable);
 }

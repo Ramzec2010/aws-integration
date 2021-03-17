@@ -6,6 +6,7 @@ import com.roman.awsintegration.rest.response.ProductResponse;
 import com.roman.awsintegration.rest.request.ProductRequest;
 import com.roman.awsintegration.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -50,8 +51,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> getAllProducts() {
-       return productRepository.findAll().stream().map(entity -> ProductResponse.builder()
+    public List<ProductResponse> getAllProducts(Pageable pageable) {
+       return productRepository.findAll(pageable).stream().map(entity -> ProductResponse.builder()
                 .id(entity.getProductId())
                 .name(entity.getName())
                 .price(entity.getPrice())
