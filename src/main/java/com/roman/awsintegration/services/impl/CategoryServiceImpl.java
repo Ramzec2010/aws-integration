@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -81,13 +82,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryResponse> getAllCategory(Pageable pageable) {
-       return categoryRepository.findAll(pageable).stream().map(entity -> CategoryResponse.builder()
-                .id(entity.getCategoryId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .products(buildProductResponse(entity.getProducts()))
-                .build()).collect(Collectors.toList());
+       return categoryRepository.findAll(pageable).stream()
+               .map(this::mapCategoryModelToDto)
+               .collect(Collectors.toList());
 
+    }
+
+    @Override
+    @SneakyThrows
+    public CategoryResponse getCategoryWithFilteredProducts(Long categoryid, BigDecimal minPrice, BigDecimal maxPrice, String like) {
+        CategoryEntity entity = categoryRepository.findByCategoryIdAndProductsPriceBetweenAndProductsNameContaining(categoryid, minPrice, maxPrice, like).orElseThrow(CategoryNotFoundException::new);
+        return mapCategoryModelToDto(entity);
     }
 
     private List<ProductResponse> buildProductResponse(Set<ProductEntity> products) {

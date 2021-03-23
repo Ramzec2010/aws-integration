@@ -1,9 +1,7 @@
 package com.roman.awsintegration.controller;
 
 import com.roman.awsintegration.rest.request.CategoryRequest;
-import com.roman.awsintegration.rest.request.ProductRequest;
 import com.roman.awsintegration.rest.response.CategoryResponse;
-import com.roman.awsintegration.rest.response.ProductResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -39,7 +40,7 @@ public class ProductApiImpl implements ProductApi {
     }
 
     @Override
-    public ResponseEntity<List<ProductResponse>> getAllProducts(Pageable pageable) {
-        return ResponseEntity.ok(productService.getAllProducts(pageable));
+    public ResponseEntity<List<ProductResponse>> getAllProducts(BigDecimal minVal, BigDecimal maxVal, String like, Pageable pageable) {
+        return ResponseEntity.ok(productService.getAllProducts(minVal, maxVal, like, pageable));
     }
 }

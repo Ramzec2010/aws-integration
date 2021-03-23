@@ -8,11 +8,9 @@ import com.roman.awsintegration.services.CategoryService;
 import com.roman.awsintegration.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -27,8 +25,8 @@ public class CategoryProductsApi  implements CategoryProductApi {
     private CategoryProductService categoryProductService;
 
     @Override
-    public ResponseEntity<List<ProductResponse>> retrieveAllProducts(Long categoryid) {
-        CategoryResponse category = categoryService.getCategory(categoryid);
+    public ResponseEntity<List<ProductResponse>> retrieveAllProducts(BigDecimal minPrice, BigDecimal maxPrice, String like, Long categoryid) {
+        CategoryResponse category = categoryService.getCategoryWithFilteredProducts(categoryid, minPrice, maxPrice, like);
         return ResponseEntity.ok(category.getProducts());
     }
 

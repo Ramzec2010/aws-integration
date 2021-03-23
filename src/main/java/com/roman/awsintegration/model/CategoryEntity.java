@@ -58,6 +58,6 @@ public class CategoryEntity extends BaseEntity {
     @Formula("(SELECT COUNT(p.product_id) FROM product p " +
             "join PRODUCT_CATEGORY_RELATION pc on pc.product_id = p.product_id " +
             "join CATEGORY c on c.CATEGORY_ID = pc.CATEGORY_ID " +
-            "WHERE c.CATEGORY_ID =  category_id)")
+            "WHERE c.CATEGORY_ID = category_id)")
     private Integer numberOfProducts;
 }

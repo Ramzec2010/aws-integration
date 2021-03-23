@@ -4,6 +4,7 @@ import com.roman.awsintegration.rest.response.ProductResponse;
 import com.roman.awsintegration.rest.request.ProductRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
@@ -14,7 +15,7 @@ public interface ProductService {
 
     void deleteProduct(Long productId);
 
-    List<ProductResponse> getAllProducts(Pageable pageable);
+    List<ProductResponse> getAllProducts(BigDecimal minVal, BigDecimal maxVal, String like, Pageable pageable);
 
     ProductResponse updateProduct(Long productId, ProductRequest request);
 }
