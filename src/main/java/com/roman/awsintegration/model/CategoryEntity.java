@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -53,4 +54,10 @@ public class CategoryEntity extends BaseEntity {
 
     @ManyToMany(mappedBy = "categories")
     private Set<ProductEntity> products = new HashSet<>();
+
+    @Formula("(SELECT COUNT(p.product_id) FROM product p " +
+            "join PRODUCT_CATEGORY_RELATION pc on pc.product_id = p.product_id " +
+            "join CATEGORY c on c.CATEGORY_ID = pc.CATEGORY_ID " +
+            "WHERE c.CATEGORY_ID =  category_id)")
+    private Integer numberOfProducts;
 }

@@ -1,5 +1,6 @@
 package com.roman.awsintegration.controller.impl;
 
+import com.roman.awsintegration.controller.CategoryProductApi;
 import com.roman.awsintegration.rest.response.CategoryResponse;
 import com.roman.awsintegration.rest.response.ProductResponse;
 import com.roman.awsintegration.services.CategoryProductService;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class CategoryProductsApi {
+public class CategoryProductsApi  implements CategoryProductApi {
 
     @Autowired
     private CategoryService categoryService;
@@ -25,17 +26,19 @@ public class CategoryProductsApi {
     @Autowired
     private CategoryProductService categoryProductService;
 
+    @Override
     public ResponseEntity<List<ProductResponse>> retrieveAllProducts(Long categoryid) {
         CategoryResponse category = categoryService.getCategory(categoryid);
         return ResponseEntity.ok(category.getProducts());
     }
 
+    @Override
     public ResponseEntity<?> addProduct(Long categoryid, Long productid) {
         categoryProductService.addProductToCategory(categoryid,productid);
         return ResponseEntity.noContent().build();
     }
 
-
+    @Override
     public ResponseEntity<?> removeProduct(Long categoryid, Long productid) {
         categoryProductService.removeProductFromCategory(categoryid, productid);
         return ResponseEntity.noContent().build();

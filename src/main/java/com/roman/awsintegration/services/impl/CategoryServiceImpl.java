@@ -10,10 +10,12 @@ import com.roman.awsintegration.rest.response.ProductResponse;
 import com.roman.awsintegration.services.CategoryService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,6 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .name(save.getName())
                 .id(save.getCategoryId())
                 .description(save.getDescription())
+                .numberOfProducts(save.getNumberOfProducts())
                 .products(save.getProducts().stream().map(this::mapProductEntityToDto).collect(Collectors.toList()))
                 .build();
     }
@@ -77,8 +80,17 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryResponse> getAllCategory() {
-        List<CategoryEntity> all = categoryRepository.findAll();
-        return all.stream().map(this::mapCategoryModelToDto).collect(Collectors.toList());
+    public List<CategoryResponse> getAllCategory(Pageable pageable) {
+       return categoryRepository.findAll(pageable).stream().map(entity -> CategoryResponse.builder()
+                .id(entity.getCategoryId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .products(buildProductResponse(entity.getProducts()))
+                .build()).collect(Collectors.toList());
+
+    }
+
+    private List<ProductResponse> buildProductResponse(Set<ProductEntity> products) {
+        return products.stream().map(this::mapProductEntityToDto).collect(Collectors.toList());
     }
 }

@@ -4,6 +4,7 @@ import com.roman.awsintegration.rest.request.CategoryRequest;
 import com.roman.awsintegration.rest.request.ProductRequest;
 import com.roman.awsintegration.rest.response.CategoryResponse;
 import com.roman.awsintegration.rest.response.ProductResponse;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,5 +37,5 @@ public interface CategoryApi {
     @RequestMapping(value = "/api/v1/categories",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<CategoryResponse>> getAllCategories();
+    ResponseEntity<List<CategoryResponse>> getAllCategories(Pageable pageable);
 }

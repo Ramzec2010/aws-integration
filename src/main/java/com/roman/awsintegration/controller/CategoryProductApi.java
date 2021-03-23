@@ -1,6 +1,7 @@
 package com.roman.awsintegration.controller;
 
 import com.roman.awsintegration.rest.response.ProductResponse;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,7 @@ public interface CategoryProductApi {
     ResponseEntity<List<ProductResponse>> retrieveAllProducts(@PathVariable Long categoryid);
 
     @RequestMapping(path = "/{productid}", method = RequestMethod.POST)
-    ResponseEntity<?> addProduct(@PathVariable Long categoryid, @PathVariable Long productid);
+    ResponseEntity<?> addProduct(@PathVariable(name = "categoryid") Long categoryId, @PathVariable Long productid);
 
     @RequestMapping(path = "/{productid}", method = RequestMethod.DELETE)
     ResponseEntity<?> removeProduct(@PathVariable Long categoryid, @PathVariable Long productid);

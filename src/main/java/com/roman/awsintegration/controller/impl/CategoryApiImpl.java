@@ -5,6 +5,7 @@ import com.roman.awsintegration.rest.request.CategoryRequest;
 import com.roman.awsintegration.rest.response.CategoryResponse;
 import com.roman.awsintegration.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +38,7 @@ public class CategoryApiImpl implements CategoryApi {
     }
 
     @Override
-    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategory());
+    public ResponseEntity<List<CategoryResponse>> getAllCategories(Pageable pageable) {
+        return ResponseEntity.ok(categoryService.getAllCategory(pageable));
     }
 }
