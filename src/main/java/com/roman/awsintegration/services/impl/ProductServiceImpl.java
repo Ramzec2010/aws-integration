@@ -1,9 +1,11 @@
 package com.roman.awsintegration.services.impl;
 
+import com.roman.awsintegration.converter.Converter;
+import com.roman.awsintegration.exception.ProductNotFoundException;
 import com.roman.awsintegration.model.ProductEntity;
 import com.roman.awsintegration.repository.ProductRepository;
-import com.roman.awsintegration.rest.response.ProductResponse;
 import com.roman.awsintegration.rest.request.ProductRequest;
+import com.roman.awsintegration.rest.response.ProductResponse;
 import com.roman.awsintegration.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private Converter converter;
 
     @Override
     public ProductResponse createProduct(ProductRequest request) {
@@ -28,22 +32,13 @@ public class ProductServiceImpl implements ProductService {
                 .price(request.getPrice())
                 .build();
         ProductEntity save = productRepository.save(entity);
-        return ProductResponse.builder()
-                .id(save.getProductId())
-                .price(save.getPrice())
-                .name(save.getName())
-                .build();
+        return converter.mapProductEntityToDto(save);
     }
 
     @Override
     public ProductResponse getProduct(Long productId) throws Exception {
-        Optional<ProductEntity> byId = productRepository.findById(productId);
-        return byId.map(entity -> ProductResponse.builder()
-                    .id(entity.getProductId())
-                    .name(entity.getName())
-                    .price(entity.getPrice())
-                    .build())
-                .orElseThrow(Exception::new);
+        ProductEntity product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
+        return converter.mapProductEntityToDto(product);
     }
 
     @Override
@@ -53,11 +48,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> getAllProducts(BigDecimal minVal, BigDecimal maxVal, String like, Pageable pageable) {
-       return productRepository.findByPriceBetweenAndNameContaining(minVal, maxVal, like, pageable).stream().map(entity -> ProductResponse.builder()
-                .id(entity.getProductId())
-                .name(entity.getName())
-                .price(entity.getPrice())
-                .build()).collect(Collectors.toList());
+       return productRepository.findByPriceBetweenAndNameContaining(minVal, maxVal, like, pageable).stream()
+               .map(entity -> converter.mapProductEntityToDto(entity))
+               .collect(Collectors.toList());
     }
 
     @Override
@@ -71,12 +64,8 @@ public class ProductServiceImpl implements ProductService {
             if (Objects.nonNull(request.getPrice())) {
                 entity.setPrice(request.getPrice());
             }
-            ProductEntity save = productRepository.save(entity);
-            return ProductResponse.builder()
-                    .id(save.getProductId())
-                    .name(save.getName())
-                    .price(save.getPrice())
-                    .build();
+            ProductEntity product = productRepository.save(entity);
+            return converter.mapProductEntityToDto(product);
         }
         throw new IllegalArgumentException("Entity with given id does not exist");
     }

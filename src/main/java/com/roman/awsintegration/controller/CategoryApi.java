@@ -2,6 +2,7 @@ package com.roman.awsintegration.controller;
 
 import com.roman.awsintegration.rest.request.CategoryRequest;
 import com.roman.awsintegration.rest.response.CategoryResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
+@Tag(name="Category api", description="Operation for category")
 public interface CategoryApi {
     @RequestMapping(value = "/api/v1/category/{categoryId}",
             produces = {"application/json"},

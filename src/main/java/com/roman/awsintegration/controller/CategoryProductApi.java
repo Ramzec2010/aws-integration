@@ -1,6 +1,7 @@
 package com.roman.awsintegration.controller;
 
 import com.roman.awsintegration.rest.response.ProductResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.math.BigDecimal;
 import java.util.List;
 
+@Tag(name="Category/product api", description="Operation for adding/removing products for category")
 @RequestMapping(path = "/api/v1/categories/{categoryid}/products")
 public interface CategoryProductApi {
 

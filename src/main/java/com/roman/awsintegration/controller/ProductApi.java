@@ -1,46 +1,55 @@
 package com.roman.awsintegration.controller;
 
-import com.roman.awsintegration.rest.response.ProductResponse;
 import com.roman.awsintegration.rest.request.ProductRequest;
+import com.roman.awsintegration.rest.response.ProductResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
+@Tag(name = "Product api", description = "Operation for product")
 public interface ProductApi {
 
-    @RequestMapping(value = "/api/v1/product/{productId}",
-            produces = {"application/json"},
-    method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteProduct(@PathVariable(name = "productId", required = true) Long productId);
 
-    @RequestMapping(value = "/api/v1/product/{productId}",
-            produces = {"application/json"},
-            method = RequestMethod.GET)
-    ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) throws Exception;
+    @Operation(
+            summary = "Delete product",
+            description = "Delete product by given id"
+    )
+    @DeleteMapping(value = "/api/v1/product/{productId}",
+            produces = {"application/json"})
+    ResponseEntity<Void> deleteProduct(@PathVariable(name = "productId", required = true)
+                                       @Parameter(description = "Product id") @NotNull Long productId);
 
-    @RequestMapping(value = "/api/v1/product",
-            produces = {"application/json"},
-            method = RequestMethod.POST)
-    ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest request);
+    @GetMapping(value = "/api/v1/product/{productId}",
+            produces = {"application/json"})
+    ResponseEntity<ProductResponse> getProduct(@Parameter(description = "Product id") @NotNull
+                                               @PathVariable Long productId) throws Exception;
 
-    @RequestMapping(value = "/api/v1/product/{productId}",
-            produces = {"application/json"},
-            method = RequestMethod.PATCH)
-    ResponseEntity<ProductResponse> updateProduct(@PathVariable Long productId, @RequestBody ProductRequest request);
+    @PostMapping(value = "/api/v1/product",
+            produces = {"application/json"})
+    ResponseEntity<ProductResponse> createProduct(@Parameter(description = "Product request") @RequestBody ProductRequest request);
 
-    @RequestMapping(value = "/api/v1/products",
-            produces = {"application/json"},
-            method = RequestMethod.GET)
+    @PatchMapping(value = "/api/v1/product/{productId}",
+            produces = {"application/json"})
+    ResponseEntity<ProductResponse> updateProduct(@PathVariable @Parameter(description = "Product id") @NotNull Long productId,
+                                                  @Parameter(description = "Product request") @RequestBody ProductRequest request);
+
+    @GetMapping(value = "/api/v1/products",
+            produces = {"application/json"})
     ResponseEntity<List<ProductResponse>> getAllProducts(@RequestParam(name = "minP", defaultValue = "0", required = false) BigDecimal minPrice,
-                                                         @RequestParam(name = "maxP", defaultValue = Long.MAX_VALUE+"", required = false) BigDecimal maxPrice,
+                                                         @RequestParam(name = "maxP", defaultValue = Long.MAX_VALUE + "", required = false) BigDecimal maxPrice,
                                                          @RequestParam(name = "like", required = false, defaultValue = "") String like,
                                                          Pageable pageable);
 }

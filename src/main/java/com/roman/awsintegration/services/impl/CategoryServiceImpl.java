@@ -1,5 +1,6 @@
 package com.roman.awsintegration.services.impl;
 
+import com.roman.awsintegration.converter.Converter;
 import com.roman.awsintegration.exception.CategoryNotFoundException;
 import com.roman.awsintegration.model.CategoryEntity;
 import com.roman.awsintegration.model.ProductEntity;
@@ -24,6 +25,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private Converter converter;
 
     @Override
     public void deleteCategory(Long categoryId) {
@@ -33,9 +36,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @SneakyThrows
     public CategoryResponse getCategory(Long categoryId) {
-        CategoryEntity byId = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+        CategoryEntity bycategory = categoryRepository
+                .findById(categoryId)
+                .orElseThrow(CategoryNotFoundException::new);
 
-        return mapCategoryModelToDto(byId);
+        return converter.mapCategoryModelToDto(bycategory);
     }
 
     @Override
@@ -44,58 +49,45 @@ public class CategoryServiceImpl implements CategoryService {
                 .name(request.getName())
                 .description(request.getDescription())
                 .build();
-        CategoryEntity save = categoryRepository.save(entity);
-        return mapCategoryModelToDto(save);
+        CategoryEntity savedCategory = categoryRepository.save(entity);
+        return converter.mapCategoryModelToDto(savedCategory);
     }
 
-    private CategoryResponse mapCategoryModelToDto(CategoryEntity save) {
-        return CategoryResponse.builder()
-                .name(save.getName())
-                .id(save.getCategoryId())
-                .description(save.getDescription())
-                .numberOfProducts(save.getNumberOfProducts())
-                .products(save.getProducts().stream().map(this::mapProductEntityToDto).collect(Collectors.toList()))
-                .build();
-    }
-
-    private ProductResponse mapProductEntityToDto(ProductEntity productEntity) {
-        return ProductResponse.builder()
-                .name(productEntity.getName())
-                .id(productEntity.getProductId())
-                .price(productEntity.getPrice())
-                .categories(productEntity.getCategories().stream().map(CategoryEntity::getName).collect(Collectors.toList()))
-                .build();
-    }
 
     @Override
+    @SneakyThrows
     public CategoryResponse updateCategory(Long categoryId, CategoryRequest request) {
-        CategoryEntity entity = categoryRepository.findById(categoryId).get();
+        CategoryEntity category = categoryRepository
+                .findById(categoryId)
+                .orElseThrow(CategoryNotFoundException::new);
         if (Objects.nonNull(request.getDescription())) {
-            entity.setDescription(request.getDescription());
+            category.setDescription(request.getDescription());
         }
         if (Objects.nonNull(request.getName())) {
-            entity.setName(request.getName());
+            category.setName(request.getName());
         }
-        entity = categoryRepository.save(entity);
-        return mapCategoryModelToDto(entity);
+        category = categoryRepository.save(category);
+        return converter.mapCategoryModelToDto(category);
     }
 
     @Override
     public List<CategoryResponse> getAllCategory(Pageable pageable) {
-       return categoryRepository.findAll(pageable).stream()
-               .map(this::mapCategoryModelToDto)
-               .collect(Collectors.toList());
+        return categoryRepository.findAll(pageable).stream()
+                .map(converter::mapCategoryModelToDto)
+                .collect(Collectors.toList());
 
     }
 
     @Override
     @SneakyThrows
     public CategoryResponse getCategoryWithFilteredProducts(Long categoryid, BigDecimal minPrice, BigDecimal maxPrice, String like) {
-        CategoryEntity entity = categoryRepository.findByCategoryIdAndProductsPriceBetweenAndProductsNameContaining(categoryid, minPrice, maxPrice, like).orElseThrow(CategoryNotFoundException::new);
-        return mapCategoryModelToDto(entity);
+        CategoryEntity category = categoryRepository
+                .findByCategoryIdAndProductsPriceBetweenAndProductsNameContaining(categoryid, minPrice, maxPrice, like)
+                .orElseThrow(CategoryNotFoundException::new);
+        return converter.mapCategoryModelToDto(category);
     }
 
     private List<ProductResponse> buildProductResponse(Set<ProductEntity> products) {
-        return products.stream().map(this::mapProductEntityToDto).collect(Collectors.toList());
+        return products.stream().map(converter::mapProductEntityToDto).collect(Collectors.toList());
     }
 }
