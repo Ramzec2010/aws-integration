@@ -31,8 +31,8 @@ public class CategoryProductsApi  implements CategoryProductApi {
     }
 
     @Override
-    public ResponseEntity<?> addProduct(Long categoryid, Long productid) {
-        categoryProductService.addProductToCategory(categoryid,productid);
+    public ResponseEntity<?> addProduct(Long categoryId, Long productId) {
+        categoryProductService.addProductToCategory(categoryId,productId);
         return ResponseEntity.noContent().build();
     }
 

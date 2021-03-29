@@ -13,18 +13,18 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Tag(name="Category/product api", description="Operation for adding/removing products for category")
-@RequestMapping(path = "/api/v1/categories/{categoryid}/products")
+@RequestMapping(path = "/api/v1/categories/{categoryId}/products")
 public interface CategoryProductApi {
 
     @RequestMapping(method = RequestMethod.GET)
     ResponseEntity<List<ProductResponse>> retrieveAllProducts(@RequestParam(name = "minP", defaultValue = "0", required = false) BigDecimal minPrice,
                                                               @RequestParam(name = "maxP", defaultValue = Long.MAX_VALUE+"", required = false) BigDecimal maxPrice,
                                                               @RequestParam(name = "like", defaultValue = "", required = false) String like,
-            @PathVariable Long categoryid);
+            @PathVariable Long categoryId);
 
-    @RequestMapping(path = "/{productid}", method = RequestMethod.POST)
-    ResponseEntity<?> addProduct(@PathVariable(name = "categoryid") Long categoryId, @PathVariable Long productid);
+    @RequestMapping(path = "/{productId}", method = RequestMethod.POST)
+    ResponseEntity<?> addProduct(@PathVariable(name = "categoryId") Long categoryId, @PathVariable Long productId);
 
-    @RequestMapping(path = "/{productid}", method = RequestMethod.DELETE)
-    ResponseEntity<?> removeProduct(@PathVariable Long categoryid, @PathVariable Long productid);
+    @RequestMapping(path = "/{productId}", method = RequestMethod.DELETE)
+    ResponseEntity<?> removeProduct(@PathVariable Long categoryId, @PathVariable Long productId);
 }

@@ -62,7 +62,7 @@ jobs: # a collection of steps
               docker kill $(docker ps -q)
               docker rm $(docker ps -a -q)
               docker rmi $(docker images -q)
-              docker run -d -p 80:8080 ramzec2010/roman-public-repository
+              docker run -d -p 80:8080 ramzec2010/roman-public-repository --env DB_URL=$DB_URL --env POSTGRES_USER=$POSTGRES_USER --env POSTGRES_PASSWORD=$POSTGRES_PASSWORD
             ENDSSH
 
 workflows:

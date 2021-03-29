@@ -19,7 +19,7 @@ public class CategoryApiImpl implements CategoryApi {
     @Override
     public ResponseEntity<Void> deleteCategory(Long categoryId) {
         categoryService.deleteCategory(categoryId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Override
