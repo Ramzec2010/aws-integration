@@ -53,7 +53,7 @@ public class CategoryEntity extends BaseEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<ProductEntity> products = new HashSet<>();
 
     @Formula("(SELECT COUNT(p.product_id) FROM product p " +

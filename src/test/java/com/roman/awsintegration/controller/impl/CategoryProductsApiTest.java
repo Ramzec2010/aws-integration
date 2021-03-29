@@ -41,11 +41,11 @@ class CategoryProductsApiTest extends AwsIntegrationApplicationTests {
     @Test
     public void shouldAssignProductToCategory() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/categories/{categoryId}/products/{productId}", VALID_CATEGORY_ID, VALID_PRODUCT_ID)
+                MockMvcRequestBuilders.post("/api/v1/categories/1/products/1")
                         .header(CONTENT_TYPE, "application/json"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
-        assertEquals(1, categoryService.getCategory(Long.getLong(VALID_CATEGORY_ID)).getProducts().size());
+        assertEquals(1, categoryService.getCategory(Long.valueOf(VALID_CATEGORY_ID)).getProducts().size());
     }
 
 }
