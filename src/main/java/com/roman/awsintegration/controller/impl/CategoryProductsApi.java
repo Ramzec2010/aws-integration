@@ -37,8 +37,8 @@ public class CategoryProductsApi  implements CategoryProductApi {
     }
 
     @Override
-    public ResponseEntity<?> removeProduct(Long categoryid, Long productid) {
-        categoryProductService.removeProductFromCategory(categoryid, productid);
+    public ResponseEntity<?> removeProduct(Long categoryId, Long productId) {
+        categoryProductService.removeProductFromCategory(categoryId, productId);
         return ResponseEntity.noContent().build();
     }
 

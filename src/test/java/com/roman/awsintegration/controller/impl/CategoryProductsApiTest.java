@@ -3,6 +3,7 @@ package com.roman.awsintegration.controller.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roman.awsintegration.AwsIntegrationApplicationTests;
 import com.roman.awsintegration.exception.handler.AppExceptionHandler;
+import com.roman.awsintegration.services.CategoryProductService;
 import com.roman.awsintegration.services.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,8 @@ class CategoryProductsApiTest extends AwsIntegrationApplicationTests {
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private CategoryProductService categoryProductService;
 
     @BeforeEach
     public void setup() {
@@ -46,6 +49,18 @@ class CategoryProductsApiTest extends AwsIntegrationApplicationTests {
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         assertEquals(1, categoryService.getCategory(Long.valueOf(VALID_CATEGORY_ID)).getProducts().size());
+    }
+
+    @Test
+    public void shouldRemoveProductFromCategory() throws Exception {
+        categoryProductService.addProductToCategory(2L,2L);
+        assertEquals(1, categoryService.getCategory(Long.valueOf("2")).getProducts().size());
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/api/v1/categories/2/products/2")
+                        .header(CONTENT_TYPE, "application/json"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        assertEquals(0, categoryService.getCategory(Long.valueOf("2")).getProducts().size());
     }
 
 }

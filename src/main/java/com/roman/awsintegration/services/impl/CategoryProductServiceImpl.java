@@ -37,11 +37,11 @@ public class CategoryProductServiceImpl implements CategoryProductService {
         Optional<CategoryEntity> category = categoryRepository.findByCategoryIdAndProductsProductId(categoryid, productid);
 
         if (category.isPresent()){
-            Optional<ProductEntity> first = category.get().getProducts().stream().filter(productEntity -> productEntity.getProductId() == productid).findFirst();
-            category.get().getProducts().remove(first);
-            first.get().getCategories().remove(category.get());
+            ProductEntity relatedProduct = category.get().getProducts().stream().filter(productEntity -> productEntity.getProductId().equals(productid)).findFirst().get();
+            category.get().getProducts().removeIf(entity -> entity.getProductId().equals(relatedProduct.getProductId()));
+            relatedProduct.getCategories().removeIf(categoryEntity -> categoryEntity.getCategoryId().equals(category.get().getCategoryId()));
             categoryRepository.save(category.get());
-            productRepository.save(first.get());
+            productRepository.save(relatedProduct);
         }
     }
 }
