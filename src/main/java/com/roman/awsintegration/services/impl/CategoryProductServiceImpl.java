@@ -29,6 +29,7 @@ public class CategoryProductServiceImpl implements CategoryProductService {
         categoryEntity.getProducts().add(productEntity);
         productEntity.getCategories().add(categoryEntity);
         categoryRepository.save(categoryEntity);
+        productRepository.save(productEntity);
     }
 
     @Override
